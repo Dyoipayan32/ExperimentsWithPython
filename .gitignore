@@ -8,6 +8,7 @@ __pycache__/
 
 # Distribution / packaging
 .Python
+.pytest_cache/
 .idea/
 build/
 develop-eggs/
