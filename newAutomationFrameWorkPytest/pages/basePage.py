@@ -34,29 +34,13 @@ class BaseLocators(object):
 class BasePage:
     def __init__(self, driver):
         self.driver = driver
+        self.actionChains = ActionChains(driver)
 
     ####################
     #   Button Clicks  #
     ####################
 
-    def _css_button_click(self, descriptor):
-        """
-        Clicks `button` type button based on descriptor
 
-        :param descriptor:Input button name as appears in the UI
-        """
-        button = None
-        try:
-            xpath = (By.XPATH, "//*[@data-automation-class='vtx-button']//span[text() = '" + descriptor + "']/..")
-            self.driver.find_element(*xpath)
-            button = WebDriverWait(self.driver, 30).until(EC.element_to_be_clickable(xpath))
-        except NoSuchElementException:
-            xpath = (By.XPATH, "//button[@type='button' and text() = '" + descriptor + "']")
-            self.driver.find_element(*xpath)
-            button = WebDriverWait(self.driver, 30).until(EC.element_to_be_clickable(xpath))
-        finally:
-            assert button, f'No button found with the text {descriptor}'
-            button.click()
 
     def _css_button_submit_click(self, descriptor):
         """
@@ -64,7 +48,6 @@ class BasePage:
 
         :param descriptor:Input button name as appears in the UI
         """
-        actionChains = ActionChains(self.driver)
         button = self.driver.find_element(By.XPATH, "//button[@type='submit']//span[text() = '" + descriptor + "']")
         if button:
             self.highlight_element(button)
@@ -200,11 +183,11 @@ class BasePage:
         headers = grid.find_elements(*BaseLocators.GRID_HEADER_SORT)
         for header in headers:
             if columnName == header.text:
-                actionChains = ActionChains(self.driver)
-                actionChains.move_to_element(header).perform()
+
+                self.actionChains.move_to_element(header).perform()
                 burger = header.find_element(*BaseLocators.BURGER_MENU)
-                actionChains.move_to_element(burger).perform()
-                actionChains.click(burger).perform()
+                self.actionChains.move_to_element(burger).perform()
+                self.actionChains.click(burger).perform()
                 break
         else:
             assert False, 'No header found with the name ' + columnName

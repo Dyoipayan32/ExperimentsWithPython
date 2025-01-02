@@ -1,0 +1,18 @@
+response = {
+	"items": [
+		{
+			"name": "Jyoti",
+			"address": {
+				"home": "test home address",
+				"office": "test office address"
+			}
+		},
+		{
+			"name": "Priyanka",
+			"address": {
+				"home": "test home address",
+				"office": "test office address"
+			}
+		}
+	]
+}

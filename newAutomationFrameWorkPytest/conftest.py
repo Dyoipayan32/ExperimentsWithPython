@@ -45,8 +45,7 @@ def ui(request):
         DRIVER = webdriver.Chrome(service=service)
     pageObjectCaller = PageObjectsUI(DRIVER)
     yield pageObjectCaller
-
-    DRIVER.close()
+    # DRIVER.close()
     DRIVER.quit()
 
 

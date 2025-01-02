@@ -4,7 +4,7 @@ from unittest.mock import patch, Mock
 from make_http_requests import fetch_data_from_api, send_data_to_api
 
 
-@pytest.mark.usefixtures("setup_fixture_auto_use")
+# @pytest.mark.usefixtures("setup_fixture_auto_use")
 class TestFix03:
     def test_fetch_data_from_api(self):
         # Mock the requests.get function
