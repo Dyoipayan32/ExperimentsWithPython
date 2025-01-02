@@ -253,17 +253,70 @@ class Navigation(BasePage):
         #   Click Components   #
         ########################
 
-    def click_button(self, textOnButton):
+    def click_button(self, xpath):
         """
-        Clicks a button with the specified text on the UI
-
-        : param textOnButton : Text of button as it appears in the UI
+        Clicks a button on the UI
+        : param xpath : xpath locator of button element
         : return : None
         """
-        try:
-            self._css_button_click(textOnButton)
-        except NoSuchElementException:
-            assert False, textOnButton + " button not found."
+        button = self.driver.find_element(By.XPATH, xpath)
+        if button:
+            self.highlight_element(button)
+            button.click()
+
+    def get_current_window_handle_id(self):
+        return self.driver.current_window_handle
+
+    def get_opened_window_handles(self):
+        window_handles = self.driver.window_handles
+        return window_handles
+
+    def print_window_handle_ids(self, windowHandles):
+        for windowHandle in windowHandles:
+            print(windowHandle)
+
+    def print_browser_window_titles(self, windowHandles):
+        for windowHandle in windowHandles:
+            self.driver.switch_to.window(windowHandle)
+            print(self.driver.title)
+
+    def close_a_browser_window_by_title(self, windowHandles, title):
+        for windowHandle in windowHandles:
+            self.driver.switch_to.window(windowHandle)
+            if self.driver.title == title:
+                self.driver.close()
+
+    def close_a_browser_window_by_handleId(self, windowHandles, windowHandleId):
+        for windowHandle in windowHandles:
+            self.driver.switch_to.window(windowHandle)
+            if str(windowHandle) == windowHandleId:
+                self.driver.close()
+
+    def switch_to_a_frame(self, frameName):
+        self.driver.switch_to.frame(frameName)
+
+    def switch_back_to_main_browser(self):
+        self.driver.switch_to.default_content()
+
+    def write_into_text_box(self, xpathLocator, text):
+        self.driver.find_element(By.XPATH, xpathLocator).send_keys(text)
+
+    def accepts_alert(self):
+        self.driver.switch_to.alert.accept()
+
+    def rejects_alert(self):
+        self.driver.switch_to.alert.dismiss()
+
+    def writes_into_alert(self, text):
+        alert = self.driver.switch_to.alert
+        alert.send_keys(text)
+        # self.driver.execute_script(f'arguments[0].value={text}', 'alert.textbox')
+        # self.driver.execute_script(f'alert({text})')
+
+        # self.driver.execute_script('arguments[0].value=%s' % text, 'alert.textbox')
+        # self.driver.execute_script("alert('%s')" % text)
+        # self.driver.execute_script('document.getElementById("userInput").value=%s' % text, alert.text)
+        time.sleep(2)
 
     def click_link(self, linkText, linkIndex=0):
         """
